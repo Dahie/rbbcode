@@ -6,9 +6,8 @@ require 'rubygems'
 require 'treetop'
 require 'sanitize'
 require 'rbbcode/node_extensions'
-require 'rbbcode/sanitize'
 
-class RbbCode  
+class RbbCode
   def self.parser_class
     if !@grammar_loaded
       Treetop.load_from_string(
@@ -25,14 +24,11 @@ class RbbCode
     end
     RbbCodeGrammarParser
   end
-  
+
   def initialize(options = {})
-    @options = {
-      :sanitize => true,
-      :sanitize_config => RbbCode::DEFAULT_SANITIZE_CONFIG
-    }.merge(options)
+    @options = options
   end
-  
+
   def convert(bb_code)
     html = self.class.parser_class.new.parse("\n\n" + bb_code + "\n\n").to_html
     if @options[:emoticons]
